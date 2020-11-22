@@ -12,8 +12,11 @@
   --fw-bold: 900;
 
   --clr-light: #ffffff;
-  --clr-dark: #151717;
-  --clr-gray: #929292;
+  --clr-dark: #131313;
+  --clr-gray: #353535;
+  --clr-highlight: #787F47;
+  --clr-background: #C7D56A;
+  --clr-background-light: #E7F399;
 
   --fs-h1: 3rem;
   --fs-h2: 2.25rem;
@@ -31,8 +34,8 @@
 }
 
 body {
-  background: var(--clr-dark);
-  color: var(--clr-light);
+  background: var(--clr-background);
+  color: var(--clr-dark);
   margin: 0;
   font-family: var(--ff-primary);
   font-size: var(--fs-body);
@@ -70,6 +73,7 @@ h3 {
   margin: 0;
   font-family: var(--ff-secondary);
   font-size: var(--fs-h3);
+  color: var(--clr-gray);
 }
 
 .introduction {
