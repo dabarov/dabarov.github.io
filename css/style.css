@@ -34,12 +34,13 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
   :root {
-    --fs-h1: 2.5rem;
+    --fs-h1: 1.5rem;
     --fs-h2: 1.25rem;
-    --fs-h3: 1rem;
+    --fs-h3: 0.8rem;
     --fs-body: 1rem;
+    --fs-social: 1.5rem;
   }
 }
 
