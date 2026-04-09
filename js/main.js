@@ -19,35 +19,33 @@
   svg.classList.add('timeline-svg');
   svg.setAttribute('aria-hidden', 'true');
 
-  var defs = document.createElementNS(NS, 'defs');
-  var marker = document.createElementNS(NS, 'marker');
-  marker.setAttribute('id', 'tl-arrow');
-  marker.setAttribute('viewBox', '0 0 8 6');
-  marker.setAttribute('refX', '7');
-  marker.setAttribute('refY', '3');
-  marker.setAttribute('markerWidth', '5');
-  marker.setAttribute('markerHeight', '4');
-  marker.setAttribute('orient', 'auto');
-  var arrowPath = document.createElementNS(NS, 'path');
-  arrowPath.setAttribute('d', 'M0.5,0.5 L7,3 L0.5,5.5');
-  arrowPath.setAttribute('fill', 'none');
-  arrowPath.setAttribute('stroke', 'rgba(0,0,0,0.18)');
-  arrowPath.setAttribute('stroke-width', '1');
-  arrowPath.setAttribute('stroke-linecap', 'round');
-  arrowPath.setAttribute('stroke-linejoin', 'round');
-  marker.appendChild(arrowPath);
-  defs.appendChild(marker);
-  svg.appendChild(defs);
-
   var timelinePath = document.createElementNS(NS, 'path');
   timelinePath.setAttribute('fill', 'none');
-  timelinePath.setAttribute('stroke', 'rgba(0,0,0,0.12)');
+  timelinePath.setAttribute('stroke', 'rgba(0,0,0,0.10)');
   timelinePath.setAttribute('stroke-width', '1.2');
   timelinePath.setAttribute('stroke-dasharray', '6 6');
   timelinePath.setAttribute('stroke-linecap', 'round');
-  timelinePath.setAttribute('marker-mid', 'url(#tl-arrow)');
-  timelinePath.setAttribute('marker-end', 'url(#tl-arrow)');
   svg.appendChild(timelinePath);
+
+  var ARROW_W = 5;
+  var ARROW_H = 3.5;
+  var CHEVRON_D = 'M' + (-ARROW_W) + ',' + (-ARROW_H) + ' L0,0 L' + (-ARROW_W) + ',' + ARROW_H;
+
+  var arrowEls = [];
+  var arrowCount = Math.max(0, logos.length - 1);
+
+  for (var a = 0; a < arrowCount; a++) {
+    var arrow = document.createElementNS(NS, 'path');
+    arrow.setAttribute('class', 'timeline-arrow');
+    arrow.setAttribute('fill', 'none');
+    arrow.setAttribute('stroke', 'rgba(0,0,0,0.22)');
+    arrow.setAttribute('stroke-width', '1.2');
+    arrow.setAttribute('stroke-linecap', 'round');
+    arrow.setAttribute('stroke-linejoin', 'round');
+    arrow.setAttribute('d', CHEVRON_D);
+    svg.appendChild(arrow);
+    arrowEls.push(arrow);
+  }
 
   var container = document.querySelector('.floating-logos');
   container.insertBefore(svg, container.firstChild);
@@ -70,18 +68,48 @@
   }
 
   function updateTimeline(offX, offY) {
-    var points = [];
+    var pts = [];
     for (var i = 0; i < basePos.length; i++) {
       var p = basePos[i];
       var dx = dragOffsets[i] ? dragOffsets[i].x : 0;
       var dy = dragOffsets[i] ? dragOffsets[i].y : 0;
-      var px = p.cx + (offX || 0) * p.depth + dx;
-      var py = p.cy + (offY || 0) * p.depth + dy;
-      points.push(px + ',' + py);
+      pts.push({
+        x: p.cx + (offX || 0) * p.depth + dx,
+        y: p.cy + (offY || 0) * p.depth + dy
+      });
     }
-    if (points.length) {
-      timelinePath.setAttribute('d', 'M' + points.join(' L'));
+
+    var n = pts.length;
+    if (n < 2) return;
+
+    var d = 'M' + pts[0].x.toFixed(1) + ',' + pts[0].y.toFixed(1);
+
+    for (var i = 0; i < n - 1; i++) {
+      var p0 = pts[Math.max(0, i - 1)];
+      var p1 = pts[i];
+      var p2 = pts[i + 1];
+      var p3 = pts[Math.min(n - 1, i + 2)];
+
+      var cp1x = p1.x + (p2.x - p0.x) / 6;
+      var cp1y = p1.y + (p2.y - p0.y) / 6;
+      var cp2x = p2.x - (p3.x - p1.x) / 6;
+      var cp2y = p2.y - (p3.y - p1.y) / 6;
+
+      d += ' C' + cp1x.toFixed(1) + ',' + cp1y.toFixed(1) +
+           ' ' + cp2x.toFixed(1) + ',' + cp2y.toFixed(1) +
+           ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1);
+
+      var mx = 0.125 * p1.x + 0.375 * cp1x + 0.375 * cp2x + 0.125 * p2.x;
+      var my = 0.125 * p1.y + 0.375 * cp1y + 0.375 * cp2y + 0.125 * p2.y;
+      var tx = 0.75 * (cp1x - p1.x) + 1.5 * (cp2x - cp1x) + 0.75 * (p2.x - cp2x);
+      var ty = 0.75 * (cp1y - p1.y) + 1.5 * (cp2y - cp1y) + 0.75 * (p2.y - cp2y);
+      var angle = Math.atan2(ty, tx) * 180 / Math.PI;
+
+      arrowEls[i].setAttribute('transform',
+        'translate(' + mx.toFixed(1) + ',' + my.toFixed(1) + ') rotate(' + angle.toFixed(1) + ')');
     }
+
+    timelinePath.setAttribute('d', d);
   }
 
   cachePositions();
