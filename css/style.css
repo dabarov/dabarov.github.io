@@ -185,6 +185,9 @@ a {
   transform: translate(var(--hide-x, 0px), var(--hide-y, 0px)) scale(0.8);
   transition: opacity 600ms var(--ease-out),
               transform 600ms var(--ease-out);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
 }
 
 body.logos-active .floating-logo {
@@ -201,34 +204,34 @@ body.logos-active .floating-logo {
   animation-fill-mode: both;
 }
 
-.floating-logo:nth-child(1) .logo-bob {
+.floating-logo:nth-of-type(1) .logo-bob {
   animation-name: bob-1;
   animation-duration: 7s;
 }
 
-.floating-logo:nth-child(2) .logo-bob {
+.floating-logo:nth-of-type(2) .logo-bob {
   animation-name: bob-2;
   animation-duration: 8.5s;
 }
 
-.floating-logo:nth-child(3) .logo-bob {
+.floating-logo:nth-of-type(3) .logo-bob {
   animation-name: bob-3;
   animation-duration: 6.5s;
 }
 
-.floating-logo:nth-child(4) .logo-bob {
+.floating-logo:nth-of-type(4) .logo-bob {
   animation-name: bob-1;
   animation-duration: 9s;
   animation-direction: reverse;
 }
 
-.floating-logo:nth-child(5) .logo-bob {
+.floating-logo:nth-of-type(5) .logo-bob {
   animation-name: bob-2;
   animation-duration: 7.5s;
   animation-direction: reverse;
 }
 
-.floating-logo:nth-child(6) .logo-bob {
+.floating-logo:nth-of-type(6) .logo-bob {
   animation-name: bob-3;
   animation-duration: 8s;
 }
@@ -282,6 +285,24 @@ body.logos-active .floating-logo {
 
 .floating-logo img:active {
   transform: scale(0.97);
+}
+
+/* ---------- Drag state ---------- */
+
+.floating-logo.is-dragging {
+  z-index: 10;
+  cursor: grabbing;
+}
+
+.floating-logo.is-dragging img {
+  filter: grayscale(0) opacity(1);
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.floating-logo.is-dragging .logo-tooltip {
+  opacity: 0 !important;
+  transition: none;
 }
 
 /* ---------- Tooltip ---------- */

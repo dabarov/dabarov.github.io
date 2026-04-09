@@ -54,6 +54,7 @@
 
   // --- Position caching (avoid layout reads in animation loop) ---
   var basePos = [];
+  var dragOffsets = [];
 
   function cachePositions() {
     basePos = [];
@@ -64,6 +65,7 @@
         cy: el.offsetTop + el.offsetHeight / 2,
         depth: parseFloat(el.dataset.depth) || 20
       });
+      if (!dragOffsets[i]) dragOffsets[i] = { x: 0, y: 0 };
     }
   }
 
@@ -71,8 +73,10 @@
     var points = [];
     for (var i = 0; i < basePos.length; i++) {
       var p = basePos[i];
-      var px = p.cx + (offX || 0) * p.depth;
-      var py = p.cy + (offY || 0) * p.depth;
+      var dx = dragOffsets[i] ? dragOffsets[i].x : 0;
+      var dy = dragOffsets[i] ? dragOffsets[i].y : 0;
+      var px = p.cx + (offX || 0) * p.depth + dx;
+      var py = p.cy + (offY || 0) * p.depth + dy;
       points.push(px + ',' + py);
     }
     if (points.length) {
@@ -126,6 +130,69 @@
     drawTimeline();
   }, 400);
 
+  // --- Drag and drop ---
+  var activeDragIndex = -1;
+  var dragStartPointerX = 0;
+  var dragStartPointerY = 0;
+  var dragStartOffsetX = 0;
+  var dragStartOffsetY = 0;
+
+  function applyLogoPosition(index) {
+    var dx = dragOffsets[index] ? dragOffsets[index].x : 0;
+    var dy = dragOffsets[index] ? dragOffsets[index].y : 0;
+    var moveX = currentX * basePos[index].depth + dx;
+    var moveY = currentY * basePos[index].depth + dy;
+    logos[index].style.translate = moveX + 'px ' + moveY + 'px';
+  }
+
+  function finishDrag(logo, index) {
+    activeDragIndex = -1;
+    var bob = logo.querySelector('.logo-bob');
+    if (bob) bob.style.animationPlayState = '';
+    logo.classList.remove('is-dragging');
+  }
+
+  logos.forEach(function (logo, index) {
+    logo.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      if (activeDragIndex !== -1) return;
+
+      activeDragIndex = index;
+      dragStartPointerX = e.clientX;
+      dragStartPointerY = e.clientY;
+      dragStartOffsetX = dragOffsets[index].x;
+      dragStartOffsetY = dragOffsets[index].y;
+
+      logo.setPointerCapture(e.pointerId);
+
+      var bob = logo.querySelector('.logo-bob');
+      if (bob) bob.style.animationPlayState = 'paused';
+
+      logo.classList.add('is-dragging');
+      e.preventDefault();
+    });
+
+    logo.addEventListener('pointermove', function (e) {
+      if (activeDragIndex !== index) return;
+
+      dragOffsets[index].x = dragStartOffsetX + (e.clientX - dragStartPointerX);
+      dragOffsets[index].y = dragStartOffsetY + (e.clientY - dragStartPointerY);
+
+      applyLogoPosition(index);
+      updateTimeline(currentX, currentY);
+    });
+
+    logo.addEventListener('pointerup', function (e) {
+      if (activeDragIndex !== index) return;
+      finishDrag(logo, index);
+    });
+
+    logo.addEventListener('pointercancel', function (e) {
+      if (activeDragIndex !== index) return;
+      finishDrag(logo, index);
+    });
+  });
+
   if (prefersReducedMotion || !hasFinePointer) return;
 
   var idleTimeout = null;
@@ -133,7 +200,7 @@
   var isHovering = false;
 
   function hideLogos() {
-    if (isHovering) return;
+    if (isHovering || activeDragIndex !== -1) return;
     document.body.classList.remove('logos-active');
     resetTimeline();
   }
@@ -170,7 +237,7 @@
 
   document.addEventListener('mouseleave', function () {
     if (idleTimeout) clearTimeout(idleTimeout);
-    if (!isHovering) hideLogos();
+    if (!isHovering && activeDragIndex === -1) hideLogos();
   });
 
   document.addEventListener('mouseenter', function () {
@@ -182,8 +249,10 @@
     currentY += (targetY - currentY) * damping;
 
     for (var i = 0; i < logos.length; i++) {
-      var moveX = currentX * basePos[i].depth;
-      var moveY = currentY * basePos[i].depth;
+      var dx = dragOffsets[i] ? dragOffsets[i].x : 0;
+      var dy = dragOffsets[i] ? dragOffsets[i].y : 0;
+      var moveX = currentX * basePos[i].depth + dx;
+      var moveY = currentY * basePos[i].depth + dy;
       logos[i].style.translate = moveX + 'px ' + moveY + 'px';
     }
 
