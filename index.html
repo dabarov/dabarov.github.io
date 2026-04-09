@@ -3,28 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aldiyar Dabarov Web Page</title>
+    <title>Aldiyar Dabarov — Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/all.css" />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/font.css" />
   </head>
   <body>
+    <div class="floating-logos" aria-hidden="true">
+      <div class="floating-logo" data-depth="25" style="--x: 8%; --y: 18%; --stagger: 0; --hide-x: -120px; --hide-y: -60px;">
+        <div class="logo-bob">
+          <img src="img/nu.jpeg" alt="Nazarbayev University" draggable="false" />
+          <span class="logo-tooltip">Nazarbayev University<br><small>BE and MSc · 2016 — 2022</small></span>
+        </div>
+      </div>
+      <div class="floating-logo" data-depth="18" style="--x: 20%; --y: 72%; --stagger: 1; --hide-x: -120px; --hide-y: 60px;">
+        <div class="logo-bob">
+          <img src="img/bts.jpeg" alt="BTS Digital" draggable="false" />
+          <span class="logo-tooltip">BTS Digital<br><small>Internship · Summer 2018</small></span>
+        </div>
+      </div>
+      <div class="floating-logo" data-depth="30" style="--x: 38%; --y: 8%; --stagger: 2; --hide-x: 0px; --hide-y: -100px;">
+        <div class="logo-bob">
+          <img src="img/dar.jpeg" alt="DAR" draggable="false" />
+          <span class="logo-tooltip">DAR<br><small>Internship · Summer 2020</small></span>
+        </div>
+      </div>
+      <div class="floating-logo" data-depth="22" style="--x: 58%; --y: 78%; --stagger: 3; --hide-x: 0px; --hide-y: 100px;">
+        <div class="logo-bob">
+          <img src="img/latoken.jpeg" alt="LATOKEN" draggable="false" />
+          <span class="logo-tooltip">LATOKEN<br><small>Lead Developer · 2022 — 2023</small></span>
+        </div>
+      </div>
+      <div class="floating-logo" data-depth="28" style="--x: 76%; --y: 14%; --stagger: 4; --hide-x: 120px; --hide-y: -60px;">
+        <div class="logo-bob">
+          <img src="img/luxoft.jpeg" alt="Luxoft" draggable="false" />
+          <span class="logo-tooltip">Luxoft<br><small>Senior Software Developer · 2023 — 2025</small></span>
+        </div>
+      </div>
+      <div class="floating-logo" data-depth="20" style="--x: 82%; --y: 58%; --stagger: 5; --hide-x: 120px; --hide-y: 60px;">
+        <div class="logo-bob">
+          <img src="img/exness.jpeg" alt="Exness" draggable="false" />
+          <span class="logo-tooltip">Exness<br><small>Senior Software Engineer · 2025 — 2026</small></span>
+        </div>
+      </div>
+    </div>
+
     <section class="introduction">
       <p class="section-subtitle">Hi, I am an engineer</p>
       <h1 class="section-title">ALDIYAR DABAROV</h1>
       <ul class="social-links">
-        <li class="social-links-item">
-          <a href="https://github.com/dabarov">
-            <i class="fab fa-github-square"></i>
+        <li>
+          <a href="https://github.com/dabarov" class="social-btn" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+            <span>GitHub</span>
           </a>
         </li>
-        <li class="social-links-item">
-          <a href="https://www.linkedin.com/in/aldiyardabarov/">
-            <i class="fab fa-linkedin"></i>
+        <li>
+          <a href="https://www.linkedin.com/in/aldiyardabarov/" class="social-btn" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-linkedin-in"></i>
+            <span>LinkedIn</span>
           </a>
         </li>
       </ul>
     </section>
+
+    <script src="js/main.js"></script>
   </body>
 </html>
