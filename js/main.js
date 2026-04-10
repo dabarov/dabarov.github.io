@@ -21,7 +21,7 @@
 
   var timelinePath = document.createElementNS(NS, 'path');
   timelinePath.setAttribute('fill', 'none');
-  timelinePath.setAttribute('stroke', 'rgba(0,0,0,0.10)');
+  timelinePath.setAttribute('stroke', 'rgba(198,122,82,0.22)');
   timelinePath.setAttribute('stroke-width', '1.2');
   timelinePath.setAttribute('stroke-dasharray', '6 6');
   timelinePath.setAttribute('stroke-linecap', 'round');
@@ -38,7 +38,7 @@
     var arrow = document.createElementNS(NS, 'path');
     arrow.setAttribute('class', 'timeline-arrow');
     arrow.setAttribute('fill', 'none');
-    arrow.setAttribute('stroke', 'rgba(0,0,0,0.22)');
+    arrow.setAttribute('stroke', 'rgba(198,122,82,0.38)');
     arrow.setAttribute('stroke-width', '1.2');
     arrow.setAttribute('stroke-linecap', 'round');
     arrow.setAttribute('stroke-linejoin', 'round');

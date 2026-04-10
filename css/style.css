@@ -17,6 +17,11 @@
   --clr-muted: #78716c;
   --clr-border: rgba(28, 25, 23, 0.12);
 
+  --clr-accent: #c67a52;
+  --clr-accent-hover: #b06a45;
+  --clr-accent-glow: rgba(198, 122, 82, 0.18);
+  --clr-accent-soft: rgba(198, 122, 82, 0.08);
+
   --fs-h1: 3.25rem;
   --fs-h2: 2.25rem;
   --fs-h3: 1.1rem;
@@ -45,7 +50,10 @@
 }
 
 body {
-  background: var(--clr-background);
+  background:
+    radial-gradient(ellipse at 15% 30%, var(--clr-accent-soft) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 70%, rgba(198, 122, 82, 0.05) 0%, transparent 45%),
+    var(--clr-background);
   color: var(--clr-dark);
   margin: 0;
   font-family: var(--ff-body);
@@ -160,9 +168,9 @@ a {
 
 @media (hover: hover) and (pointer: fine) {
   .social-btn:hover {
-    background: var(--clr-dark);
-    color: var(--clr-background);
-    border-color: var(--clr-dark);
+    background: var(--clr-accent);
+    color: #fff;
+    border-color: var(--clr-accent);
   }
 }
 
@@ -279,7 +287,7 @@ body.logos-active .floating-logo {
   .floating-logo:hover img {
     filter: grayscale(0) opacity(1);
     transform: scale(1.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px var(--clr-accent-glow);
   }
 }
 
@@ -297,7 +305,7 @@ body.logos-active .floating-logo {
 .floating-logo.is-dragging img {
   filter: grayscale(0) opacity(1);
   transform: scale(1.05);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(198, 122, 82, 0.25);
 }
 
 .floating-logo.is-dragging .logo-tooltip {
